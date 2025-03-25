@@ -27,6 +27,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
   db:
     image: mysql:8.0.32
     container_name: "${COMPOSE_PROJECT_NAME}-db"
@@ -50,6 +51,7 @@ services:
       - db
     networks:
       - tms_py
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin"
