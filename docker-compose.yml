@@ -6,23 +6,42 @@ volumes:
   db_data:
 
 services:
+  nginx:
+    container_name: "${COMPOSE_PROJECT_NAME}-nginx"
+    image: cslant/dev-nginx
+    volumes:
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - ./:/app
+      - ./logs/nginx:/var/log/nginx
+    ports:
+      - "${NGINX_HOST_HTTP_PORT:-80}:80"
+    platform: ${PLATFORM:-linux/amd64}
+    environment:
+      - FLASK_HOST_PORT=${FLASK_HOST_PORT}
+    networks:
+      - tms_py
+    depends_on:
+      - flask_app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   db:
     image: mysql:8.0.32
     container_name: "${COMPOSE_PROJECT_NAME}-db"
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=tms
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
     volumes:
       - db_data:/var/lib/mysql
     ports:
       - "${MYSQL_HOST_PORT}:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}"
     networks:
       - tms_py
 
   flask_app:
-    build: .
+    build: docker
     container_name: "${COMPOSE_PROJECT_NAME}-flask"
     volumes:
       - .:/app
@@ -32,11 +51,11 @@ services:
       - db
     networks:
       - tms_py
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin"
     platform: ${PLATFORM:-linux/amd64}
-
     restart: always
     ports:
       - "${PHPMYADMIN_PORT:-9024}:8380"
