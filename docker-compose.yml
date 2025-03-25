@@ -12,10 +12,11 @@ services:
     volumes:
       - ./docker/nginx/templates:/etc/nginx/templates
       - ./:/app
+      - ./logs/nginx:/var/log/nginx
     ports:
       - "${NGINX_HOST_HTTP_PORT:-80}:80"
     environment:
-      -
+      - FLASK_HOST_PORT=${FLASK_HOST_PORT}
     networks:
       - tms_py
     depends_on:
