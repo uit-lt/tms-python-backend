@@ -6,6 +6,25 @@ volumes:
   db_data:
 
 services:
+  nginx:
+    container_name: "${COMPOSE_PROJECT_NAME}-nginx"
+    image: cslant/dev-nginx
+    volumes:
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - ./:/app
+    ports:
+      - "${NGINX_HOST_HTTP_PORT:-80}:80"
+    environment:
+      -
+    networks:
+      - tms_py
+    depends_on:
+      - flask_app
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   db:
     image: mysql:8.0.32
     container_name: "${COMPOSE_PROJECT_NAME}-db"
@@ -22,7 +41,7 @@ services:
       - tms_py
 
   flask_app:
-    build: .
+    build: docker
     container_name: "${COMPOSE_PROJECT_NAME}-flask"
     volumes:
       - .:/app
