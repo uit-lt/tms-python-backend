@@ -1,0 +1,47 @@
+networks:
+  tms_py:
+    driver: bridge
+
+volumes:
+  db_data:
+
+services:
+  db:
+    image: mysql:8.0.32
+    container_name: "${COMPOSE_PROJECT_NAME}-db"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=tms
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "${MYSQL_HOST_PORT}:3306"
+    networks:
+      - tms_py
+
+  flask_app:
+    build: .
+    container_name: "${COMPOSE_PROJECT_NAME}-flask"
+    volumes:
+      - .:/app
+    ports:
+      - "${FLASK_HOST_PORT}:5000"
+    depends_on:
+      - db
+    networks:
+      - tms_py
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin"
+    platform: ${PLATFORM:-linux/amd64}
+
+    restart: always
+    ports:
+      - "${PHPMYADMIN_PORT:-9024}:8380"
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 2048M
+    networks:
+      - tms_py
