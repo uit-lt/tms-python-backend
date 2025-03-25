@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name tms.uit.local;
+    root /app;
+    index index.php index.html index.htm;
+
+    set $upstream_home_fe flask:${FLASK_HOST_PORT};
+
+    access_log /var/log/nginx/tms.uit.local-access.log;
+    error_log /var/log/nginx/tms.uit.local-error.log debug;
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
