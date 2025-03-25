@@ -27,7 +27,13 @@ Task Management System backend built with Flask and MySQL.
    docker-compose up -d
    ```
 
-4. Access the application at http://localhost:8084
+4. Access the application at http://tms.uit.local:8084
+
+   > Note: Don't forget to add the domain to your hosts file.
+   >
+   > ```
+   > 127.0.0.1    tms.uit.local
+   > ```
 
 ## 📦 Services
 
