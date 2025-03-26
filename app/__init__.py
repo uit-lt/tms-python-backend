@@ -12,7 +12,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
     app.config['HOST'] = config.FLASK_HOST
-    app.config['PORT'] = config.FLASK_HOST_PORT
+    app.config['PORT'] = config.FLASK_PORT
 
     db.init_app(app)
     migrate.init_app(app, db)

@@ -4,12 +4,12 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv(override=True)
 
-FLASK_HOST = os.getenv("FLASK_HOST", "localhost")
-FLASK_HOST_PORT = os.getenv("FLASK_HOST_PORT", "5001")
+FLASK_HOST = os.getenv("FLASK_HOST", "flask_app")
+FLASK_HOST_PORT = os.getenv("FLASK_PORT", "5000")
 
 DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST", "localhost")  # Default to localhost if not set
+DB_PASSWORD = os.getenv("MYSQL_ROOT_PASSWORD")
+DB_HOST = os.getenv("DB_HOST", "db")  # Default to localhost if not set
 DB_PORT = os.getenv("DB_PORT", "3306")  # Default to 3306 if not set
 DB_NAME = os.getenv("DB_NAME")
 
