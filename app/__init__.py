@@ -1,20 +1,26 @@
-from flask_migrate import Migrate
-from flask_marshmallow import Marshmallow
-from config import app, db
+from flask import Flask
+from app.helpers.extensions import db, migrate, ma
 
+from app.routes import main_bp
 from app.tasks.routes import task_bp
 from app.users.routes import user_bp
-
-migrate = Migrate()
-ma = Marshmallow()
-
+from config import SQLALCHEMY_DATABASE_URI
 
 def create_app():
+    app = Flask(__name__)
 
+    # Configure your app
+    app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    # Initialize extensions with the app
+    db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
 
-    app.register_blueprint(task_bp, url_prefix="/tasks")
-    app.register_blueprint(user_bp, url_prefix="/users")
+    # Register blueprints
+    app.register_blueprint(main_bp)
+    app.register_blueprint(task_bp)
+    app.register_blueprint(user_bp)
 
     return app
