@@ -8,11 +8,11 @@ load_dotenv(override=True)
 FLASK_HOST = os.getenv("FLASK_HOST", "0.0.0.0")
 FLASK_PORT = os.getenv("FLASK_PORT", "5000")
 
-DB_USER = os.getenv("DB_USER")
-DB_PASSWORD = os.getenv("MYSQL_ROOT_PASSWORD")
+DB_USER = os.getenv("DB_USER", "root")
+DB_PASSWORD = os.getenv("MYSQL_ROOT_PASSWORD", "root")
 DB_HOST = os.getenv("DB_HOST", "db")  # Default to db if not set in the docker-compose file
 DB_PORT = os.getenv("DB_PORT", "3306")  # Default to 3306 if not set in the docker-compose file
-DB_NAME = os.getenv("DB_NAME")
+DB_NAME = os.getenv("DB_NAME", "tms")
 
 SQLALCHEMY_DATABASE_URI = os.getenv(
     "DATABASE_URL",

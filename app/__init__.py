@@ -14,6 +14,9 @@ def create_app():
     app.config['HOST'] = FLASK_HOST
     app.config['PORT'] = FLASK_PORT
 
+    # echo some text to the console
+    print("FLASK_HOST:", app.config['HOST'])
+
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
