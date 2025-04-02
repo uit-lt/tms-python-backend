@@ -44,9 +44,9 @@ Task Management System backend built with Flask and MySQL.
 ### Project Structure
 ```
 tms-python-backend/
-├── app.py                # Main application file
+├── run.py                # Main application file
 ├── config.py             # Configuration management
-├── models/               # Database models
+├── app/               # Database models
 ├── docker/               # Docker configurations
 │   ├── Dockerfile        
 │   └── nginx/            # Nginx configurations
