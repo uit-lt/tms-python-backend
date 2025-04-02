@@ -1,7 +1,7 @@
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
 
-users = Blueprint('users', __name__)
+users_bp = Blueprint("users_bp", __name__)
 
-@users.route('/')
-def index():
-    return "Users Home"
+@users_bp.route("/users", methods=["GET"])
+def get_tasks():
+    return {"message": "Users list"}

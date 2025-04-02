@@ -2,8 +2,8 @@ from flask import Flask
 from app.helpers.extensions import db, migrate, ma
 
 from app.routes import main_bp
-from app.tasks.routes import task_bp
-from app.users.routes import user_bp
+from app.tasks.routes import tasks_bp
+from app.users.routes import users_bp
 from config import SQLALCHEMY_DATABASE_URI
 
 def create_app():
@@ -20,7 +20,7 @@ def create_app():
 
     # Register blueprints
     app.register_blueprint(main_bp)
-    app.register_blueprint(task_bp)
-    app.register_blueprint(user_bp)
+    app.register_blueprint(tasks_bp)
+    app.register_blueprint(users_bp)
 
     return app
