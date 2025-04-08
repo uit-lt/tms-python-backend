@@ -3,10 +3,12 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 
+from config import SQLALCHEMY_DATABASE_URI
+
 load_dotenv()  # Load biến từ .env
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
 
     # JWT
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=24)
