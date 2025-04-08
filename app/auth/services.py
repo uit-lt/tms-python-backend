@@ -14,3 +14,6 @@ def create_user(data):
     db.session.add(new_user)
     db.session.commit()
     return "User created successfully", 201
+
+def get_user_by_email(email):
+    return User.query.filter_by(email=email).first()
