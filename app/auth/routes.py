@@ -1,10 +1,27 @@
 from flask import request, jsonify
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import check_password_hash
-from app.auth.services import create_user, get_user_by_email
+from app.auth.services import create_user, get_user_by_email, get_user_by_id
 from flask import Blueprint
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+# GET METHODS
+@auth_bp.route('/me', methods=['GET'])
+@jwt_required()
+def get_current_user():
+    user_id = get_jwt_identity()
+    user = get_user_by_id(int(user_id))
+
+    if not user:
+        return jsonify(message="User not found"), 404
+
+    return jsonify(
+        id=user.id,
+        username=user.username,
+        email=user.email
+    ), 200
+
 
 # POST METHODS
 @auth_bp.route('/register', methods=['POST'])
