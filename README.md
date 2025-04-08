@@ -1,6 +1,6 @@
 # TMS Backend
 
-Task Management System backend built with Flask and MySQL.
+Task Management System backend built with **Flask**, **MySQL**, and **Docker**.
 
 ## 🚀 Getting Started
 
@@ -34,6 +34,16 @@ Task Management System backend built with Flask and MySQL.
    > ```
    > 127.0.0.1    tms.uit.local
    > ```
+   
+## 🧱 Database Migration
+  > Note: Don't forget run the migration after you create a new database.
+   >
+   > ```
+   > touch cmd/__init__.py
+   > 
+   > docker-compose exec flask_app python -m cmd.migrate
+   > ```
+   >
 
 ## 📦 Services
 
@@ -46,7 +56,7 @@ Task Management System backend built with Flask and MySQL.
 tms-python-backend/
 ├── run.py                # Main application file
 ├── config.py             # Configuration management
-├── app/               # Database models
+├── app/                  # Application package
 ├── docker/               # Docker configurations
 │   ├── Dockerfile        
 │   └── nginx/            # Nginx configurations

@@ -28,7 +28,7 @@ erDiagram
         int id
         string email
         string password_hash
-        string name
+        string username
         boolean two_factor_enabled
         datetime created_at
     }
