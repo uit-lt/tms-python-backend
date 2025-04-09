@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from config import SQLALCHEMY_DATABASE_URI
 
-load_dotenv()  # Load biến từ .env
+load_dotenv()  # Load define variable in .env
 
 class Config:
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
