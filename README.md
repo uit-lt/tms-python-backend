@@ -45,6 +45,22 @@ Task Management System backend built with **Flask**, **MySQL**, and **Docker**.
    > ```
    >
 
+## 🧱 Seeding Database
+  > Note: If you want to seed the database with initial data, run the following command:
+   >
+   > ```
+   > docker compose run --rm flask_app python -m cmd.seed
+   > ```
+   >
+
+## 🧱 Autogenerate JWT_SECRET_KEY
+  > Note: If you want to generate a new JWT_SECRET_KEY, run the following command:
+   >
+   > ```
+   > bash cmd/gen_jwt_secret.sh
+   > ```
+   >
+
 ## 📦 Services
 
 - **Flask Backend**: Available at http://localhost:5001
