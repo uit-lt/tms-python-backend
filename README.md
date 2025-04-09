@@ -41,7 +41,7 @@ Task Management System backend built with **Flask**, **MySQL**, and **Docker**.
    > ```
    > touch cmd/__init__.py
    > 
-   > docker-compose exec flask_app python -m cmd.migrate
+   > docker compose run --rm flask_app python -m cmd.migrate
    > ```
    >
 
