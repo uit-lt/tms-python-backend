@@ -94,8 +94,7 @@ def test_update_task(client, auth_headers_user1):
         "title": "Temp",
         "description": "Test",
         "assignee_id": 1,
-        "project_id": 1,
-        # "due_date": datetime.utcnow().isoformat()
+        "project_id": 1
     }, headers=auth_headers_user1)
     task_id = res.json["id"]
 
@@ -106,8 +105,7 @@ def test_update_task(client, auth_headers_user1):
     }, headers=auth_headers_user1)
 
     print(res)
-    print("current_user_id", user_id)
-    print("task.created_by", task.created_by)
+
     assert res.status_code == 200
     assert res.json["message"] == "Task updated"
 
@@ -118,15 +116,13 @@ def test_delete_task(client, auth_headers_user1):
         "title": "Delete Test",
         "description": "To be deleted",
         "assignee_id": 1,
-        "project_id": 1,
-        # "due_date": datetime.utcnow().isoformat()
+        "project_id": 1
     }, headers=auth_headers_user1)
     task_id = res.json["id"]
 
     # Delete
     res = client.delete(f"/tasks/{task_id}", headers=auth_headers_user1)
-    print("current_user_id", user_id)
-    print("task.created_by", task.created_by)
+
     print(res)
     assert res.status_code == 200
     assert res.json["message"] == "Task deleted"
@@ -138,8 +134,7 @@ def test_forbidden_delete_other_users_task(client, auth_headers_user1, auth_head
         "title": "Secret",
         "description": "Don't touch",
         "assignee_id": 1,
-        "project_id": 1,
-        
+        "project_id": 1        
     }, headers=auth_headers_user1)
     task_id = res.json["id"]
 

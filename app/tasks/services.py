@@ -27,7 +27,10 @@ def create_task(data, user_id):
     return {"message": "Task created", "id": task.id}, 201
 
 def update_task(task_id, data, user_id):
+    user_id = int(user_id)
+    print("DEBUG update_task - current_user_id:", user_id)
     task = Task.query.get_or_404(task_id)
+    print("DEBUG update_task - task.created_by:", task.created_by)
     if task.created_by != user_id:
         return {"message": "Permission denied"}, 403
 
@@ -38,13 +41,18 @@ def update_task(task_id, data, user_id):
     task.priority = data.get("priority", task.priority)
 
     db.session.commit()
-    return {"message": "Task updated"}
+    return {"message": "Task updated"}, 200
 
 def delete_task(task_id, user_id):
+    user_id = int(user_id)
+    print("DEBUG update_task - current_user_id:", user_id)
+    print(type(user_id))
     task = Task.query.get_or_404(task_id)
+    print("DEBUG update_task - task.created_by:", task.created_by)
+    print(type(task.created_by))
     if task.created_by != user_id:
         return {"message": "Permission denied"}, 403
 
     db.session.delete(task)
     db.session.commit()
-    return {"message": "Task deleted"}
+    return {"message": "Task deleted"}, 200
