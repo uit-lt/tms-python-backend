@@ -1,3 +1,4 @@
+from flasgger import Swagger
 from flask import Flask
 from app.auth import auth_bp
 from app.config import Config
@@ -21,5 +22,24 @@ def create_app(test_config=None):
     app.register_blueprint(tasks_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(auth_bp)
+
+    swagger_template = {
+    "swagger": "2.0",
+    "info": {
+        "title": "Task Management API",
+        "description": "API for user registration, login, and task management.",
+        "version": "1.0"
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'"
+        }
+    },
+    "security": [{"BearerAuth": []}]
+    }
+    Swagger(app, template=swagger_template)
 
     return app

@@ -9,9 +9,6 @@ class User(db.Model):
     two_factor_enabled = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    # tasks_created = db.relationship("Task", foreign_keys='Task.created_by', backref="creator", lazy=True)
-    # tasks_assigned = db.relationship("Task", foreign_keys='Task.assignee_id', backref="assignee", lazy=True)
-
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
