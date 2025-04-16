@@ -34,9 +34,25 @@ def list_tasks():
                 type: integer
               title:
                 type: string
+              description:
+                type: string
               status:
                 type: string
+              est_time:
+                type: integer
               due_date:
+                type: string
+              priority:
+                type: string
+              assignee_id:
+                type: integer
+              project_id:
+                type: integer
+              created_by:
+                type: integer
+              created_at:
+                type: string
+              updated_at:
                 type: string
     """
     current_user_id = get_jwt_identity()

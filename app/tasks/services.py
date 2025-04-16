@@ -1,13 +1,20 @@
 from app.models import Task
 from app.helpers.extensions import db
+from datetime import datetime
 
 def create_task(data, user_id):
+    due_date = data.get("due_date")
+    if due_date:
+        try:
+            due_date = datetime.fromisoformat(due_date)
+        except ValueError:
+            return {"message": "Invalid due_date format. Must be ISO 8601."}, 400
     task = Task(
         title=data["title"],
         description=data.get("description"),
         status=data.get("status", "To Do"),
         est_time=data.get("est_time"),
-        due_date=data.get("due_date"),
+        due_date=due_date,
         priority=data.get("priority"),
         assignee_id=data.get("assignee_id"),
         project_id=data.get("project_id"),
@@ -26,8 +33,16 @@ def get_all_tasks(current_user_id, assignee_id=None):
     return [{
         "id": t.id,
         "title": t.title,
+        "description": t.description,
         "status": t.status,
-        "due_date": t.due_date.isoformat() if t.due_date else None
+        "est_time": t.est_time,
+        "due_date": t.due_date.isoformat() if t.due_date else None,
+        "priority": t.priority,
+        "assignee_id": t.assignee_id,
+        "project_id": t.project_id,
+        "created_by": t.created_by,
+        "created_at": t.created_at.isoformat(),
+        "updated_at": t.updated_at.isoformat()
     } for t in tasks]
 
 def update_task(task_id, data, user_id):
@@ -43,7 +58,9 @@ def update_task(task_id, data, user_id):
     task.status = data.get("status", task.status)
     task.due_date = data.get("due_date", task.due_date)
     task.priority = data.get("priority", task.priority)
-    task.assignee_id = data.get("assignee_id", task.priority)
+    
+    if "assignee_id" in data:
+        task.assignee_id = data["assignee_id"]
 
     db.session.commit()
     return {"message": "Task updated"}, 200
