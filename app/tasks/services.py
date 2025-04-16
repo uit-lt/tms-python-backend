@@ -1,4 +1,4 @@
-from .models import Task
+from app.models import Task
 from app.helpers.extensions import db
 
 def get_all_tasks(user_id):

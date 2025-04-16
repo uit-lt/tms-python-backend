@@ -3,22 +3,18 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import pytest
 from flask_jwt_extended import create_access_token
-from app import db
-from app.users.models import User
-from app.tasks.models import Task
-from app.models import Project
-from datetime import datetime
+from app import create_app
+from app.helpers.extensions import db
+from app.models import User, Task, Project
 
-# ---------- Fixtures ----------
 
 @pytest.fixture
 def client():
-    from app import create_app
-
     app = create_app({
         "TESTING": True,
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
-        "JWT_SECRET_KEY": "test-secret"
+        "JWT_SECRET_KEY": "test-secret",
+        "SQLALCHEMY_TRACK_MODIFICATIONS": False
     })
 
     with app.test_client() as client:
@@ -26,11 +22,11 @@ def client():
             db.create_all()
 
             # Create user 1
-            user1 = User(id=1, email="user@gmail.com", name="User", password_hash="12345")
+            user1 = User(id=1, email="user@gmail.com", username="User", password_hash="12345")
             db.session.add(user1)
 
             # Create user 2 (for test permission)
-            user2 = User(id=2, email="user2@gmail.com", name="Other", password_hash="54321")
+            user2 = User(id=2, email="user2@gmail.com", username="Other", password_hash="54321")
             db.session.add(user2)
 
             # Create project
@@ -62,8 +58,7 @@ def test_create_task(client, auth_headers_user1):
         "title": "Task from test",
         "description": "Testing task creation",
         "assignee_id": 1,
-        "project_id": 1,
-        # "due_date": datetime.utcnow().isoformat()
+        "project_id": 1
     }, headers=auth_headers_user1)
 
     assert res.status_code == 201
@@ -78,8 +73,7 @@ def test_get_tasks(client, auth_headers_user1):
         "title": "Task from test",
         "description": "Testing",
         "assignee_id": 1,
-        "project_id": 1,
-        # "due_date": datetime.utcnow().isoformat()
+        "project_id": 1
     }, headers=auth_headers_user1)
 
     res = client.get("/tasks/", headers=auth_headers_user1)

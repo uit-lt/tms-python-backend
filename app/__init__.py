@@ -1,17 +1,19 @@
 from flask import Flask
 from app.auth import auth_bp
 from app.config import Config
-from app.helpers.extensions import init_extensions  # CHỈ cần import hàm này
+from app.helpers.extensions import init_extensions
 
 from app.routes import main_bp
 from app.tasks.routes import tasks_bp
 from app.users.routes import users_bp
 
-jwt = JWTManager()
 
 def create_app(test_config=None):
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    if test_config:
+        app.config.update(test_config)
     init_extensions(app)
 
     # Register blueprints
