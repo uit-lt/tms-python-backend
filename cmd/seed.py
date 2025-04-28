@@ -17,7 +17,7 @@ def user_exists(email, username):
 
 
 with app.app_context():
-    print("Seeding users...")
+    print("📥 Seeding users...")
     users = []
 
     for _ in range(10):
@@ -36,24 +36,24 @@ with app.app_context():
 
     db.session.add_all(users)
     db.session.commit()
-    print("Seeded 10 fake users.")
+    print("✅ Seeded 10 fake users.")
 
-    print("Seeding roles...")
+    print("📥 Seeding roles...")
     admin_role = Role(name="admin")
     member_role = Role(name="member")
     db.session.add_all([admin_role, member_role])
     db.session.commit()
-    print("Roles created.")
+    print("✅ Roles created.")
 
-    print("Seeding permissions...")
+    print("📥 Seeding permissions...")
     perm_create = Permission(name="can_create_task", description="Can create task")
     perm_edit = Permission(name="can_edit_task", description="Can edit task")
     perm_delete = Permission(name="can_delete_task", description="Can delete task")
     db.session.add_all([perm_create, perm_edit, perm_delete])
     db.session.commit()
-    print("Permissions created.")
+    print("✅ Permissions created.")
 
-    print("Mapping permissions to roles...")
+    print("🔗 Mapping permissions to roles...")
     admin_perms = [
         RolePermission(role_id=admin_role.id, permission_id=perm.id)
         for perm in [perm_create, perm_edit, perm_delete]
@@ -63,11 +63,11 @@ with app.app_context():
 
     db.session.add_all(admin_perms + member_perms)
     db.session.commit()
-    print("Role-permission mappings done.")
+    print("✅ Role-permission mappings done.")
 
     admin_user = users[0]
     admin_user.role_id = admin_role.id
     db.session.commit()
-    print(f"Assigned admin role to user {admin_user.username}.")
+    print(f"✅ Assigned admin role to user {admin_user.username}.")
 
-    print("Seed complete.")
+    print("🎉 Seed complete.")

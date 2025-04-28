@@ -17,24 +17,38 @@ class Task(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 class Role(db.Model):
+    __tablename__ = 'roles'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
-    permissions = db.relationship(
-        "Permission",
-        secondary="role_permission",
-        backref="roles"
-    )
+    # Relationship
+    role_permissions = db.relationship('RolePermission', backref='role', lazy=True)
+
+    def __repr__(self):
+        return f"<Role {self.name}>"
 
 
 class Permission(db.Model):
+    __tablename__ = 'permissions'
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     description = db.Column(db.String(255))
+
+    # Relationship
+    role_permissions = db.relationship('RolePermission', backref='permission', lazy=True)
+
+    def __repr__(self):
+        return f"<Permission {self.name}>"
 
 
 class RolePermission(db.Model):
-    __tablename__ = "role_permission"
+    __tablename__ = 'role_permissions'
+
     id = db.Column(db.Integer, primary_key=True)
-    role_id = db.Column(db.Integer, db.ForeignKey("role.id"))
-    permission_id = db.Column(db.Integer, db.ForeignKey("permission.id"))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'), nullable=False)
+    permission_id = db.Column(db.Integer, db.ForeignKey('permissions.id'), nullable=False)
+
+    def __repr__(self):
+        return f"<RolePermission role_id={self.role_id} permission_id={self.permission_id}>"
