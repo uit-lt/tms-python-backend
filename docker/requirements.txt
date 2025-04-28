@@ -35,3 +35,4 @@ zipp==3.21.0
 Flask-JWT-Extended==4.7.1
 cryptography>=3.3.2
 Faker==24.8.0
+flasgger==0.9.7.1
