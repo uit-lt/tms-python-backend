@@ -49,16 +49,25 @@ def update_task(task_id, data, user_id):
     user_id = int(user_id)
 
     task = Task.query.get_or_404(task_id)
-  
+
     if task.created_by != user_id:
         return {"message": "Permission denied"}, 403
 
     task.title = data.get("title", task.title)
     task.description = data.get("description", task.description)
     task.status = data.get("status", task.status)
-    task.due_date = data.get("due_date", task.due_date)
+
+    # Handle due_date
+    due_date = data.get("due_date")
+    if due_date:
+        try:
+            due_date = datetime.fromisoformat(due_date)
+            task.due_date = due_date
+        except ValueError:
+            return {"message": "Invalid due_date format. Must be ISO 8601."}, 400
+
     task.priority = data.get("priority", task.priority)
-    
+
     if "assignee_id" in data:
         task.assignee_id = data["assignee_id"]
 

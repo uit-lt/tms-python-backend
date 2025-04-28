@@ -106,3 +106,12 @@ def test_forbidden_delete_other_users_task(client, auth_headers_user1, auth_head
     res = client.delete(f"/tasks/delete_task_view/{task_id}", headers=auth_headers_user2)
     assert res.status_code == 403
     assert res.json["message"] == "Permission denied"
+
+def test_create_task_with_invalid_due_date(client, auth_headers_user1):
+    res = client.post("/tasks/create_task_view", json={
+        "title": "Task invalid date",
+        "due_date": "invalid-date-format"
+    }, headers=auth_headers_user1)
+
+    assert res.status_code == 400
+    assert res.json["message"] == "Invalid due_date format. Must be ISO 8601."
